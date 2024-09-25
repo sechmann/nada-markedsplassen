@@ -35,6 +35,7 @@ func NewWorkstationsRoutes(endpoints *WorkstationsEndpoints, auth func(http.Hand
 			r.Delete("/", endpoints.DeleteWorkstation)
 			r.Post("/start", endpoints.StartWorkstation)
 			r.Post("/stop", endpoints.StopWorkstation)
+			r.Post("/async", OrderCreateWorkstationTask())
 		})
 	}
 }

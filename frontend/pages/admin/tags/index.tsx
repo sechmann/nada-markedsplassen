@@ -23,6 +23,7 @@ import LoaderSpinner from '../../../components/lib/spinner'
 import TagPill from '../../../components/lib/tagPill'
 import { useFetchUserData } from '../../../lib/rest/userData'
 import { updateKeywords, useFetchKeywords } from '../../../lib/rest/keywords'
+import { fetchTemplate, postTemplate } from '../../../lib/rest/restApi'
 
 const TagsCleaner = () => {
   const kw = useFetchKeywords()
@@ -354,7 +355,6 @@ const TagsCleaner = () => {
           </div>
         </div>
       )}
-
       <Button
         disabled={
           !checkStatement1 ||
