@@ -36,7 +36,7 @@ func OrderCreateWorkstationTask() http.HandlerFunc {
 
 		// Respond that the task was created successfully
 		w.WriteHeader(http.StatusAccepted)
-		w.Write([]byte(fmt.Sprintf("Task created: %s\n%s\n%s", task.GetName(), len(cookie.Value), string(reqBody))))
+		w.Write([]byte(fmt.Sprintf("Task created: %s\n%v\n%s", task.GetName(), len(cookie.Value), string(reqBody))))
 	}
 }
 
