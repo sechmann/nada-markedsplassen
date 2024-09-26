@@ -28,7 +28,8 @@ func OrderCreateWorkstationTask() http.HandlerFunc {
 		}
 
 		// Create a Cloud Task to handle the request asynchronously
-		task, err := createHTTPTaskWithAuthCookie(r.Context(), "nada-dev-db2e", "europe-west1", "test-async-arch-markedsplassen", "https://data.ansatt.dev.nav.no/api/workstations", cookie.Value, reqBody)
+		task, err := createHTTPTaskWithAuthCookie(r.Context(), "nada-dev-db2e", "europe-west1", "test-async-arch-markedsplassen",
+			"https://datamarkedsplassen.intern.dev.nav.no/quarto/create", cookie.Value, reqBody)
 		if err != nil {
 			http.Error(w, fmt.Sprintf("Failed to create Cloud Task:%v\n%v\n%v", err, len(cookie.Value), string(reqBody)), http.StatusInternalServerError)
 			return
