@@ -96,7 +96,7 @@ func (h *Transport[In, Out]) Build(logger zerolog.Logger) http.HandlerFunc {
 			}
 		}
 
-		logger.Debug().Str("param id", chi.URLParamFromCtx(r.Context(), "id")).Msg("request info")
+		logger.Info().Str("param id", chi.URLParamFromCtx(r.Context(), "id")).Msg("request info")
 		out, err := h.targetFn(r.Context(), r, in)
 		if err != nil {
 			errs.HTTPErrorResponse(w, logger, err)
