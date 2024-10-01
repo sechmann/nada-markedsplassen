@@ -12,6 +12,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/go-chi/chi"
 	"github.com/navikt/nada-backend/pkg/errs"
 	"github.com/rs/zerolog"
 )
@@ -95,6 +96,7 @@ func (h *Transport[In, Out]) Build(logger zerolog.Logger) http.HandlerFunc {
 			}
 		}
 
+		logger.Debug().Str("param id", chi.URLParamFromCtx(r.Context(), "id"))
 		out, err := h.targetFn(r.Context(), r, in)
 		if err != nil {
 			errs.HTTPErrorResponse(w, logger, err)
