@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	"github.com/go-chi/chi"
@@ -75,6 +76,8 @@ func (h *DataProductsHandler) UpdateDataProduct(ctx context.Context, _ *http.Req
 
 	id, err := uuid.Parse(chi.URLParamFromCtx(ctx, "id"))
 	if err != nil {
+		fmt.Println(ctx)
+		fmt.Println(chi.URLParamFromCtx(ctx, "id"))
 		return nil, errs.E(errs.InvalidRequest, op, err)
 	}
 
