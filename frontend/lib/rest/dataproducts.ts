@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { createDataproductUrl, createDatasetUrl, deleteDataproductUrl, deleteDatasetUrl, deleteTemplate, fetchTemplate, getAccessiblePseudoDatasetsUrl, getDataproductUrl, getDatasetUrl, mapDatasetToServicesUrl, postTemplate, putTemplate, updateDataproductUrl, updateDatasetUrl } from "./restApi"
+import { buildUrl, createDataproductUrl, createDatasetUrl, deleteDataproductUrl, deleteDatasetUrl, deleteTemplate, fetchTemplate, getAccessiblePseudoDatasetsUrl, getDataproductUrl, getDatasetUrl, mapDatasetToServicesUrl, postTemplate, putTemplate, updateDataproductUrl, updateDatasetUrl } from "./restApi"
 import { Dataproduct, DataproductWithDataset, Dataset, NewDataproduct, NewDataset, PseudoDataset, UpdateDataproductDto, UpdateDatasetDto } from "./generatedDto"
 import { da } from "date-fns/locale"
 
@@ -18,6 +18,7 @@ export const useGetDataproduct = (id: string, activeDataSetID?: string)=>{
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
 
+    console.log(buildUrl('http://localhost:8080/api')('/dataproducts/new')({"name":"test","description":"test"}))
 
     useEffect(()=>{
         if(!id) return

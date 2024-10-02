@@ -2,6 +2,23 @@ import { SearchOptions } from "./search"
 
 const isServer = typeof window === 'undefined'
 
+const buildUrl = (baseUrl: string)=>(path: string) => (id?: string)=> (queryParams?: Record<string, string>) => 
+  `${baseUrl}${path}${id? `/${id}`: ''}${queryParams? `?${new URLSearchParams(queryParams).toString()}`: ''}`
+
+const localBaseUrl = buildUrl('http://localhost:8080/api')
+const asServerBaseUrl = buildUrl('http://nada-backend/api')
+const asClientBaseUrl = buildUrl('/api')
+
+const baseUrl = ()=>{
+    if (process.env.NEXT_PUBLIC_ENV === 'development') {
+      return localBaseUrl
+    }
+    return isServer ? asServerBaseUrl : asClientBaseUrl
+}
+
+const dataproductUrl = baseUrl()('/dataproducts')
+export const getDataproductUrl = (id: string) => dataproductUrl(id)()
+
 export const apiUrl = () => {
   if (process.env.NEXT_PUBLIC_ENV === 'development') {
     return 'http://localhost:8080/api'
