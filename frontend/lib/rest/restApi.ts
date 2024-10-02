@@ -3,43 +3,39 @@ import { SearchOptions } from "./search"
 const isServer = typeof window === 'undefined'
 
 //Currying function for building urls
-const buildUrl = (baseUrl: string)=>(path: string) => (pathParam?: string)=> (queryParams?: Record<string, string>) => 
-  `${baseUrl}${path}${pathParam? `/${pathParam}`: ''}${queryParams? `?${new URLSearchParams(queryParams).toString()}`: ''}`
+const buildUrl = (baseUrl: string) => (path: string) => (pathParam?: string) => (queryParams?: Record<string, string>) =>
+  `${baseUrl}/${path}${pathParam ? `/${encodeURIComponent(pathParam)}` : ''}${queryParams ? `?${new URLSearchParams(queryParams).toString()}` : ''}`
 
 const localBaseUrl = buildUrl('http://localhost:8080/api')
 const asServerBaseUrl = buildUrl('http://nada-backend/api')
 const asClientBaseUrl = buildUrl('/api')
 
-const baseUrl = ()=>{
-    if (process.env.NEXT_PUBLIC_ENV === 'development') {
-      return localBaseUrl
-    }
-    return isServer ? asServerBaseUrl : asClientBaseUrl
-}
+const buildPath = process.env.NEXT_PUBLIC_ENV === 'development' ? localBaseUrl :
+  isServer ? asServerBaseUrl : asClientBaseUrl
 
-const dataproductUrl = baseUrl()('/dataproducts')
+const dataproductUrl = buildPath('dataproducts')
 export const getDataproductUrl = (id: string) => dataproductUrl(id)()
 export const createDataproductUrl = () => dataproductUrl('new')()
 export const updateDataproductUrl = (id: string) => dataproductUrl(id)()
 export const deleteDataproductUrl = (id: string) => dataproductUrl(id)()
 
 
-const datasetUrl = baseUrl()('/datasets')
+const datasetUrl = buildPath('datasets')
 export const getDatasetUrl = (id: string) => datasetUrl(id)()
 export const mapDatasetToServicesUrl = (datasetId: string) => `${datasetUrl(datasetId)()}/map`
 export const createDatasetUrl = () => datasetUrl('new')()
 export const deleteDatasetUrl = (id: string) => datasetUrl(id)()
 export const updateDatasetUrl = (id: string) => datasetUrl(id)()
-export const getAccessiblePseudoDatasetsUrl = () =>  datasetUrl('pseudo/accessible')()
+export const getAccessiblePseudoDatasetsUrl = () => datasetUrl('pseudo/accessible')()
 
-const storyUrl = baseUrl()('/stories')
+const storyUrl = buildPath('stories')
 export const createStoryUrl = () => storyUrl('new')()
 export const updateStoryUrl = (id: string) => storyUrl(id)()
 export const deleteStoryUrl = (id: string) => storyUrl(id)()
 
-const joinableViewUrl = baseUrl()('/pseudo/joinable')
+const joinableViewUrl = buildPath('pseudo/joinable')
 export const getJoinableViewUrl = (id: string) => joinableViewUrl(id)()
-export const createJoinableViewsUrl = () =>   joinableViewUrl('new')()
+export const createJoinableViewsUrl = () => joinableViewUrl('new')()
 export const getJoinableViewsForUserUrl = () => joinableViewUrl()()
 
 
@@ -117,7 +113,7 @@ export const postTemplate = (url: string, body?: any) => fetch(url, {
 }).then(async res => {
   if (!res.ok) {
     const errorMessage = await res.text()
-    throw new Error(`${res.statusText}${errorMessage&&":"}${errorMessage}`)
+    throw new Error(`${res.statusText}${errorMessage && ":"}${errorMessage}`)
   }
   return res
 })
