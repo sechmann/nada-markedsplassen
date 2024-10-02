@@ -2,8 +2,9 @@ import { SearchOptions } from "./search"
 
 const isServer = typeof window === 'undefined'
 
-const buildUrl = (baseUrl: string)=>(path: string) => (id?: string)=> (queryParams?: Record<string, string>) => 
-  `${baseUrl}${path}${id? `/${id}`: ''}${queryParams? `?${new URLSearchParams(queryParams).toString()}`: ''}`
+//Currying function for building urls
+const buildUrl = (baseUrl: string)=>(path: string) => (pathParam?: string)=> (queryParams?: Record<string, string>) => 
+  `${baseUrl}${path}${pathParam? `/${pathParam}`: ''}${queryParams? `?${new URLSearchParams(queryParams).toString()}`: ''}`
 
 const localBaseUrl = buildUrl('http://localhost:8080/api')
 const asServerBaseUrl = buildUrl('http://nada-backend/api')
@@ -18,6 +19,29 @@ const baseUrl = ()=>{
 
 const dataproductUrl = baseUrl()('/dataproducts')
 export const getDataproductUrl = (id: string) => dataproductUrl(id)()
+export const createDataproductUrl = () => dataproductUrl('new')()
+export const updateDataproductUrl = (id: string) => dataproductUrl(id)()
+export const deleteDataproductUrl = (id: string) => dataproductUrl(id)()
+
+
+const datasetUrl = baseUrl()('/datasets')
+export const getDatasetUrl = (id: string) => datasetUrl(id)()
+export const mapDatasetToServicesUrl = (datasetId: string) => `${datasetUrl(datasetId)()}/map`
+export const createDatasetUrl = () => datasetUrl('new')()
+export const deleteDatasetUrl = (id: string) => datasetUrl(id)()
+export const updateDatasetUrl = (id: string) => datasetUrl(id)()
+export const getAccessiblePseudoDatasetsUrl = () =>  datasetUrl('pseudo/accessible')()
+
+const storyUrl = baseUrl()('/stories')
+export const createStoryUrl = () => storyUrl('new')()
+export const updateStoryUrl = (id: string) => storyUrl(id)()
+export const deleteStoryUrl = (id: string) => storyUrl(id)()
+
+const joinableViewUrl = baseUrl()('/pseudo/joinable')
+export const getJoinableViewUrl = (id: string) => joinableViewUrl(id)()
+export const createJoinableViewsUrl = () =>   joinableViewUrl('new')()
+export const getJoinableViewsForUserUrl = () => joinableViewUrl()()
+
 
 export const apiUrl = () => {
   if (process.env.NEXT_PUBLIC_ENV === 'development') {
@@ -26,25 +50,8 @@ export const apiUrl = () => {
   return isServer ? 'http://nada-backend/api' : '/api'
 }
 
-export const getDataproductUrl = (id: string) => `${apiUrl()}/dataproducts/${id}`
-export const createDataproductUrl = () => `${apiUrl()}/dataproducts/new`
-export const updateDataproductUrl = (id: string) => `${apiUrl()}/dataproducts/${id}`
-export const deleteDataproductUrl = (id: string) => `${apiUrl()}/dataproducts/${id}`
 
-export const getDatasetUrl = (id: string) => `${apiUrl()}/datasets/${id}`
-export const mapDatasetToServicesUrl = (datasetId: string) => `${apiUrl()}/datasets/${datasetId}/map`
-export const createDatasetUrl = () => `${apiUrl()}/datasets/new`
-export const deleteDatasetUrl = (id: string) => `${apiUrl()}/datasets/${id}`
-export const updateDatasetUrl = (id: string) => `${apiUrl()}/datasets/${id}`
-export const getAccessiblePseudoDatasetsUrl = () => `${apiUrl()}/datasets/pseudo/accessible`
 
-export const createStoryUrl = () => `${apiUrl()}/stories/new`
-export const updateStoryUrl = (id: string) => `${apiUrl()}/stories/${id}`
-export const deleteStoryUrl = (id: string) => `${apiUrl()}/stories/${id}`
-
-export const getJoinableViewUrl = (id: string) => `${apiUrl()}/pseudo/joinable/${id}`
-export const createJoinableViewsUrl = () => `${apiUrl()}/pseudo/joinable/new`
-export const getJoinableViewsForUserUrl = () => `${apiUrl()}/pseudo/joinable`
 
 export const getProductAreasUrl = () => `${apiUrl()}/productareas`
 export const getProductAreaUrl = (id: string) => `${apiUrl()}/productareas/${id}`
