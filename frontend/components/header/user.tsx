@@ -4,6 +4,8 @@ import { UserState } from '../../lib/context'
 import { Dropdown, Header } from '@navikt/ds-react-internal'
 import { Hamburger, People } from '@navikt/ds-icons'
 import { Button } from '@navikt/ds-react'
+import build from 'next/dist/build'
+import { buildLoginUrl } from '../../lib/rest/login'
 
 export const backendHost = () => {
   return process.env.NODE_ENV === 'development' ? 'http://localhost:8080' : ''
@@ -179,11 +181,7 @@ export default function User() {
       <Header.Button
         className={'h-full text-base'}
         onClick={async () =>
-          await router.push(
-            `${backendHost()}/api/login?redirect_uri=${encodeURIComponent(
-              router.asPath
-            )}`
-          )
+          await router.push(buildLoginUrl(router.asPath))
         }
         key="logg-inn"
       >

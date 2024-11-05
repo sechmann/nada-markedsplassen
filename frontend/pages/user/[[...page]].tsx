@@ -13,6 +13,7 @@ import { useFetchUserData } from '../../lib/rest/userData'
 import { AccessRequestsForGroup } from '../../components/user/accessRequestsForGroup'
 import { useState } from "react"
 import { Workstation } from '../../components/user/workstation'
+import ErrorStripe from '../../components/lib/errorStripe'
 
 const containsGroup = (groups: any[], groupEmail: string) => {
     for (let i = 0; i < groups.length; i++) {
@@ -27,7 +28,7 @@ export const UserPages = () => {
     const [showAllUsersAccesses, setShowAllUsersAccesses] = useState(false)
     const { data, error, isLoading: loading } = useFetchUserData()
 
-    if (error) return <ErrorMessage error={error} />
+    if (error) return <ErrorStripe error={error} />
     if (loading || !data) return <LoaderSpinner />
 
     if (!data)
